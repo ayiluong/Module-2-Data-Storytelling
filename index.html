@@ -5,10 +5,11 @@
 <title>A Measles Resurgence?</title>
 <link rel="stylesheet" href="styles.css">
 
-<!-- Load D3.js -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
@@ -16,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
 <header>
@@ -51,11 +53,11 @@
     United States declared measles eliminated. Any of the cases that did occur after were mostly linked to international travel rather than domestic spread.
 
 
-    <p>However, recent outbreaks have raised concerns that declining vaccination rates in certain communities could allow measles to reemerge.
+    <p>However, recent outbreaks have raised concerns that declining vaccination rates could allow measles to reemerge.
       The outbreak in Texas highlighted in the reporting by Teddy Rosenbluth illustrates how quickly the virus can spread when vaccination coverage 
       drops below the level needed for herd immunity.</p>
 
-      <p>Even in years with notable outbreaks, modern case counts remain dramatically lower than the levels seen before widespread vaccination (which would be in the tens of thousands). 
+      <p>But even in years with notable outbreaks, modern case counts remain dramatically lower than the levels seen before widespread vaccination (which would be in the tens of thousands). 
         This long-term trend highlights how vaccination programs have fundamentally changed the trajectory of the disease in the United States.</p>
 </section>
 
@@ -64,7 +66,7 @@
 <section>
   <h2>2. Map of Measles Cases (2025–2026)</h2>
   <p>After examining how measles cases have changed over time, it becomes clear that not all regions are affected equally. This map shows total confirmed measles cases across the United States from 2025 and 2026 based on data from the CDC. 
-    States shaded in darker blues experienced the highest number of confirmed cases, while lighter areas indicate relatively fewer cases. These geographic patterns highlight the importance of maintaining high vaccination coverage. 
+   States shaded in darker blues experienced the highest number of confirmed cases, while lighter areas indicate relatively fewer cases. These geographic patterns highlight the importance of maintaining high vaccination coverage. 
     When vaccination rates fall within specific communities, outbreaks can spread quickly within those populations.
 
      
@@ -76,8 +78,8 @@
 
 <!-- Section 3: visualization 3 -->
 <section>
-  <h2>3. Vaccination Rates and Measles Cases</h2>
-  <p>State-level vaccination rates versus cases. Dot size represents total cases. Hover to explore each state.</p>
+  <h2>3. Vaccination Rates and Measles Cases (2025)</h2>
+  <p>State-level vaccination rates from 2024-2025 versus cases. Dot size represents total cases. Hover to explore each state.</p>
   <div id="vaccineChart"></div>
   <div id="tooltip3"></div>
   <p>The relationship between vaccination rates and measles cases reinforces the critical role vaccines play in preventing outbreaks. States that maintain coverage above the herd immunity threshold (~95%) generally report very few cases. 
@@ -133,7 +135,7 @@ const tooltip1 = d3.select("#tooltip1");
 // Load CSV
 d3.csv("yearly_cases.csv").then(function(data){
 
-  // Convert to numbers
+  // Convert years to actual numbers
   data.forEach(d => {
     d.year = +d.year;
     d.cases = +d.cases;
@@ -142,7 +144,7 @@ d3.csv("yearly_cases.csv").then(function(data){
   // Sort by year ascending order
   data.sort((a,b) => a.year - b.year);
 
-  // set axes
+  // setup axes
   const x = d3.scaleLinear()
     .domain([d3.min(data, d => d.year), d3.max(data, d=> d.year)])
     .range([0, width1]);
@@ -179,11 +181,11 @@ svg.append("text")
   
 
    //drawing the line 
-  const line = d3.line()
+ const line = d3.line()
     .x(d => x(d.year))
     .y(d => y(d.cases));
 
-  svg.append("path")
+   svg.append("path")
     .datum(data)
     .attr("fill","none")
     .attr("stroke","#f5a6ff")
@@ -192,13 +194,13 @@ svg.append("text")
 
   // Dots + Tooltip interactions!
   svg.selectAll("circle")
-  .data(data)
-  .enter()
-  .append("circle")
-    .attr("cx", function(d) { return x(d.year); })
-    .attr("cy", function(d) { return y(d.cases); })
-    .attr("r", 5)
-    .attr("fill", "#f5a6ff")
+    .data(data)
+    .enter()
+    .append("circle")
+      .attr("cx", function(d) { return x(d.year); })
+      .attr("cy", function(d) { return y(d.cases); })
+      .attr("r", 5)
+      .attr("fill", "#f5a6ff")
     
     .on("mouseover", function(event, d) {
       d3.select(this).attr("r", 8);
@@ -207,10 +209,7 @@ svg.append("text")
         .style("left", (event.pageX + 10) + "px")
         .style("top", (event.pageY - 20) + "px");
     })
-    .on("mousemove", function(event) {
-      tooltip1.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 20) + "px");
-    })
+
     .on("mouseout", function(event, d) {
       d3.select(this).attr("r", 5);
       tooltip1.style("opacity", 0);
@@ -268,7 +267,7 @@ d3.json("us_states.json").then(function(geoData) {
       //adding interaction, highlight + tooltip num of cases
 
       //hover on
-      .on("mouseover", function(event, d){
+    .on("mouseover", function(event, d){
         const stateData = measlesData.find(s => s.Location === d.properties.NAME);
     
         d3.select(this).attr("stroke","#6c5ce7").attr("stroke-width",3);
@@ -280,8 +279,8 @@ d3.json("us_states.json").then(function(geoData) {
             2026 Cases: ${stateData["2026"]}<br>
             <strong>Total: ${+stateData["2025"] + +stateData["2026"]}</strong>`
           )
-          .style("left", (event.pageX+15)+"px")
-          .style("top", (event.pageY-25)+"px");
+          .style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 20) + "px");
 
         d3.selectAll(".scatter-dot." + d.properties.NAME.replace(/\s+/g,""))
           .attr("fill","lightblue")
@@ -333,7 +332,7 @@ d3.json("us_states.json").then(function(geoData) {
       //combining vaccine and measles data (plot vaccine rate vs # cases)
       //latest year for data is 2024-2025
       //plot against 2025 cases ONLY
-     var finalData3 = vaxData
+     var mergedData = vaxData
         .filter(function(d){ return d["School Year"] === "2024-25" && cases2025[d.Location] !== undefined; })
         .map(function(d){
           return {
@@ -344,19 +343,19 @@ d3.json("us_states.json").then(function(geoData) {
         });
 
 
-      // set axes
+      // setup axes
       var x3 = d3.scaleLinear()
         .domain([75,100])
         .range([0, width3]);
 
       var y3 = d3.scaleLinear()
-        .domain([0, d3.max(finalData3, function(d){ return d.cases2025; })])
+        .domain([0, d3.max(mergedData, function(d){ return d.cases2025; })])
         .range([height3, 0]);
 
 
       // make dot size based on number of cases too
       var r = d3.scaleSqrt()
-        .domain([0, d3.max(finalData3, function(d){ return d.cases2025; })])
+        .domain([0, d3.max(mergedData, function(d){ return d.cases2025; })])
         .range([4,20]);
 
      
@@ -384,7 +383,7 @@ d3.json("us_states.json").then(function(geoData) {
 
       // draw scatterplot dots
       svg3.selectAll("circle")
-        .data(finalData3)
+        .data(mergedData)
         .enter()
         .append("circle")
         .attr("class", function(d){ return "scatter-dot " + d.state.replace(/\s+/g,""); })
@@ -401,8 +400,8 @@ d3.json("us_states.json").then(function(geoData) {
               "Vaccination: " + d.vaccination + "%<br>" +
               "2025 Cases: " + d.cases2025
             )
-            .style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 20) + "px");
+           .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 20) + "px");
 
           d3.select(this)
             .attr("fill", "lightblue");
@@ -428,4 +427,5 @@ d3.json("us_states.json").then(function(geoData) {
 
     });
   });
+
 </script>
