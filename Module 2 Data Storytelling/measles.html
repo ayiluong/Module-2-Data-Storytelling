@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A Measles Resurgence?</title>
+<link rel="stylesheet" href="styles.css">
+
+<!-- Load D3.js -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>A Measles Resurgence?</h1>
+  <h3>Original Article by Teddy Rosenbluth, NYTimes</h3>
+  <h3>Remix by Alyssa Luong</h3>
+
+  <!-- Introduction -->
+
+  <p>Starting in 2025, a growing measles outbreak in Texas and New Mexico raised concerns among public health officials.
+    Reporting from The New York Times warned that declining vaccination rates and rising skepticism toward vaccines could allow measles to
+     return as a major public health threat in the United States.</p>
+</header>
+<section>
+  <p>
+  Measles is an extremely contagious virus--one of the most contagious in recent history. In populations with no immunity, a single infected person
+  can transmit the virus to up to 9 out of 10 people. Due to this extreme transmissibility, its estimated that roughly 95% of the community must 
+  be vaccinated to establish/maintain herd immunity.  And so far, vaccination has been the single most effective tool in reducing measles infections in the United States.  
+
+  However, when national data is examined more closely, the picture becomes more complex than a simple narrative of widespread resurgence.</p>
+</section>
+
+
+<!-- Section 1: visualization 1 -->
+<section>
+  <h2>1. Measles Cases Over Time</h2>
+  <div id="linechart"></div>
+  <div id ="tooltip1"></div>
+  
+  <p>Derailing this virus took decades of public health initiatives. Before vaccination was widespread, nearly all children before the age of 15 contracted the virus. 
+    After the measles vaccine was introduced in 1963 (which would later be combined into the MMR vaccine in 1971), it was quickly administered across the country. Over the 
+    following decades, vaccination campaigns were successful in reducing measles cases nationwide. By the early 2000s, the number of cases had dropped so low that the 
+    United States declared measles eliminated. Any of the cases that did occur after were mostly linked to international travel rather than domestic spread.
+
+
+    <p>However, recent outbreaks have raised concerns that declining vaccination rates in certain communities could allow measles to reemerge.
+      The outbreak in Texas highlighted in the reporting by Teddy Rosenbluth illustrates how quickly the virus can spread when vaccination coverage 
+      drops below the level needed for herd immunity.</p>
+
+      <p>Even in years with notable outbreaks, modern case counts remain dramatically lower than the levels seen before widespread vaccination (which would be in the tens of thousands). 
+        This long-term trend highlights how vaccination programs have fundamentally changed the trajectory of the disease in the United States.</p>
+</section>
+
+
+<!-- Section 2: visualization 2 -->
+<section>
+  <h2>2. Map of Measles Cases (2025–2026)</h2>
+  <p>After examining how measles cases have changed over time, it becomes clear that not all regions are affected equally. This map shows total confirmed measles cases across the United States from 2025 and 2026 based on data from the CDC. 
+    States shaded in darker blues experienced the highest number of confirmed cases, while lighter areas indicate relatively fewer cases. These geographic patterns highlight the importance of maintaining high vaccination coverage. 
+    When vaccination rates fall within specific communities, outbreaks can spread quickly within those populations.
+
+     
+  <svg id="map"></svg>
+  <div id = "tooltip2"></div>
+
+  <p>Darker colors indicate more cases. Hover over a state to see exact numbers.</p>
+  </section>
+
+<!-- Section 3: visualization 3 -->
+<section>
+  <h2>3. Vaccination Rates and Measles Cases</h2>
+  <p>State-level vaccination rates versus cases. Dot size represents total cases. Hover to explore each state.</p>
+  <div id="vaccineChart"></div>
+  <div id="tooltip3"></div>
+  <p>The relationship between vaccination rates and measles cases reinforces the critical role vaccines play in preventing outbreaks. States that maintain coverage above the herd immunity threshold (~95%) generally report very few cases. 
+    States that fall below this threshold, like Texas and South Carolina, are at higher risk of outbreaks, and indeed saw more cases in 2025. However, not all states with lower vaccination rates experienced large outbreaks. Some areas with 
+    coverage below 95% reported relatively few cases (ex: Wisconsin). This suggests that additional factors like population density, travel patterns, and local clusters of unvaccinated individuals, also influence the severity of outbreaks. By examining this 
+    relationship, we can see that while vaccines are essential for preventing measles, the size and spread of the outbreaks depend on both vaccination coverage and other local conditions.</p>
+</section>
+
+
+<!-- Conclusion -->
+<section>
+  <h2>4. Takeaways</h2>
+  <p> Measles was once nearly eliminated in the United States thanks to widespread vaccination, and recent resurgence highlights how fragile that progress can be.
+     While declining vaccination rates are a major factor driving outbreaks, broader national data shows that cases remain geographically concentrated rather than widespread. This emphasizes 
+    that vaccines are essential, but effective public health responses, such as rapid case identification, contact tracing, and isolation of infected patients, also play a critical role in 
+    controlling outbreaks. Maintaining high vaccination coverage across all communities, alongside coordinated public health strategies, remains the most effective way to prevent future outbreaks 
+    and protect public health overall.</p>
+  </section>
+
+<!-- Sources -->
+<section>
+  <h2>Sources & Credits</h2>
+  <p>
+    Data: <a href="https://www.cdc.gov/measles/data-research/index.html">
+    CDC Measles Data & Research
+  </a><br>
+   Supplemental Information for Writing: <a href="https://www.who.int/news-room/fact-sheets/detail/measles">
+    World Health Organization
+  </a><br>
+    Original Article: <a href="https://www.nytimes.com/2025/03/17/briefing/measles-outbreak-texas.html">“A Measles Resurgence?” by Teddy Rosenbluth, NYTimes</a> <br>
+    Remix & Visualizations: Alyssa Luong
+  </p>
+</section>
+
+
+<!-- FIRST VISUALIZATION = line chart cases overtime -->
+<script>
+const margin = {top:50, right:50, bottom:90, left:60},
+      width1 = 800 - margin.left - margin.right,
+      height1 = 600 - margin.top - margin.bottom;
+
+// SVG
+const svg = d3.select("#linechart")
+  .append("svg")
+  .attr("width", width1 + margin.left + margin.right)
+  .attr("height", height1 + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", `translate(${margin.left},${margin.top})`);
+
+// create tooltip (hover over dots)
+const tooltip1 = d3.select("#tooltip1");
+
+// Load CSV
+d3.csv("yearly_cases.csv").then(function(data){
+
+  // Convert to numbers
+  data.forEach(d => {
+    d.year = +d.year;
+    d.cases = +d.cases;
+  });
+
+  // Sort by year ascending order
+  data.sort((a,b) => a.year - b.year);
+
+  // set axes
+  const x = d3.scaleLinear()
+    .domain([d3.min(data, d => d.year), d3.max(data, d=> d.year)])
+    .range([0, width1]);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.cases)])
+    .range([height1, 0]);
+
+  svg.append("g")
+    .attr("transform", `translate(0,${height1})`)
+    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // set axes titles
+
+  // x axis = year
+ svg.append("text")
+   .attr("x", width1 / 2)         
+   .attr("y", height1 + 50)   
+   .attr("text-anchor", "middle")
+   .style("font-size", "16px")
+   .text("Year");
+
+   // y axis == # cases
+svg.append("text")
+   .attr("transform", "rotate(-90)") 
+   .attr("x", -height1 / 2)       
+   .attr("y", -45)                  
+   .attr("text-anchor", "middle")   
+   .style("font-size", "16px")
+   .text("Number of Measles Cases");
+  
+
+   //drawing the line 
+  const line = d3.line()
+    .x(d => x(d.year))
+    .y(d => y(d.cases));
+
+  svg.append("path")
+    .datum(data)
+    .attr("fill","none")
+    .attr("stroke","#f5a6ff")
+    .attr("stroke-width",3)
+    .attr("d", line);
+
+  // Dots + Tooltip interactions!
+  svg.selectAll("circle")
+  .data(data)
+  .enter()
+  .append("circle")
+    .attr("cx", function(d) { return x(d.year); })
+    .attr("cy", function(d) { return y(d.cases); })
+    .attr("r", 5)
+    .attr("fill", "#f5a6ff")
+    
+    .on("mouseover", function(event, d) {
+      d3.select(this).attr("r", 8);
+      tooltip1.style("opacity", 1)
+        .html("Year: " + d.year + "<br>Cases: " + d.cases)
+        .style("left", (event.pageX + 10) + "px")
+        .style("top", (event.pageY - 20) + "px");
+    })
+    .on("mousemove", function(event) {
+      tooltip1.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 20) + "px");
+    })
+    .on("mouseout", function(event, d) {
+      d3.select(this).attr("r", 5);
+      tooltip1.style("opacity", 0);
+    });
+
+});
+</script>
+
+
+<!-- SECOND VISUALIZATION = mapping cases across US -->
+<script>
+const width2 = 800;
+const height2 = 600;
+
+var svg2 = d3.select("#map")
+  .attr("width", width2)
+  .attr("height", height2);
+
+
+  //setting up map projection
+const projection = d3.geoAlbersUsa()
+  .translate([width2 / 2, height2 / 2])
+  .scale(1000);
+
+const path = d3.geoPath().projection(projection);
+
+// Color grading based on amount of cases
+var colorScale = d3.scaleThreshold()
+  .domain([1, 10, 50, 100, 300, 600, 1000])
+  .range(d3.schemeBlues[7]);
+
+const tooltip2 = d3.select("#tooltip2");
+
+//loading map + measles case data
+d3.json("us_states.json").then(function(geoData) {
+  d3.csv("us_measles.csv").then(function(measlesData) {
+
+    svg2.selectAll("path")
+      .data(geoData.features)
+      .enter()
+      .append("path")
+        .attr("d", path)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1)
+        .attr("class", d => "map-state " + d.properties.NAME.replace(/\s+/g,""))
+        .attr("fill", function(d){
+      
+
+          //filter and color by each state
+          const stateData = measlesData.find(s => s.Location === d.properties.NAME);
+          const totalCases = stateData ? (+stateData["2025"] + +stateData["2026"]) : 0;
+          return colorScale(totalCases);
+        })
+
+      //adding interaction, highlight + tooltip num of cases
+
+      //hover on
+      .on("mouseover", function(event, d){
+        const stateData = measlesData.find(s => s.Location === d.properties.NAME);
+    
+        d3.select(this).attr("stroke","#6c5ce7").attr("stroke-width",3);
+
+        tooltip2.style("opacity", 1)
+          .html(
+            `<strong>${d.properties.NAME}</strong><br>
+            2025 Cases: ${stateData["2025"]}<br>
+            2026 Cases: ${stateData["2026"]}<br>
+            <strong>Total: ${+stateData["2025"] + +stateData["2026"]}</strong>`
+          )
+          .style("left", (event.pageX+15)+"px")
+          .style("top", (event.pageY-25)+"px");
+
+        d3.selectAll(".scatter-dot." + d.properties.NAME.replace(/\s+/g,""))
+          .attr("fill","lightblue")
+          .attr("r", function(dd){ return r(dd.cases2025)+3; });
+      })
+
+      //hover off
+      .on("mouseout", function(event, d){
+        d3.select(this).attr("stroke","white").attr("stroke-width",1);
+        tooltip2.style("opacity",0);
+
+        d3.selectAll(".scatter-dot." + d.properties.NAME.replace(/\s+/g,""))
+          .attr("fill","#917cfc")
+          .attr("r", function(dd){ return r(dd.cases2025); });
+      });
+
+  });
+});
+</script>
+
+<!-- THIRD VISUALIZATION = vaccine scatterplot -->
+<script>
+  var margin3 = {top: 40, right: 40, bottom: 70, left: 80},
+      width3 = 1000 - margin3.left - margin3.right,
+      height3 = 600 - margin3.top - margin3.bottom;
+
+  var svg3 = d3.select("#vaccineChart")
+    .append("svg")
+      .attr("width", width3 + margin3.left + margin3.right)
+      .attr("height", height3 + margin3.top + margin3.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin3.left + "," + margin3.top + ")");
+
+  var tooltip3 = d3.select("#tooltip3");
+
+  // load in measles case dta
+  d3.csv("us_measles.csv").then(function(measlesData){
+
+    // lookup for 2025 measles cases in us_measles.csv
+    var cases2025 = {};
+    for(var i=0; i<measlesData.length; i++){
+      var d = measlesData[i];
+      cases2025[d.Location] = +d["2025"];
+    }
+
+    // load in vaccination data
+    d3.csv("vaccinations.csv").then(function(vaxData){
+
+      //combining vaccine and measles data (plot vaccine rate vs # cases)
+      //latest year for data is 2024-2025
+      //plot against 2025 cases ONLY
+     var finalData3 = vaxData
+        .filter(function(d){ return d["School Year"] === "2024-25" && cases2025[d.Location] !== undefined; })
+        .map(function(d){
+          return {
+            state: d.Location,
+            vaccination: +d["Estimated Percent Vaccinated"].replace("%",""),
+            cases2025: cases2025[d.Location]
+          };
+        });
+
+
+      // set axes
+      var x3 = d3.scaleLinear()
+        .domain([75,100])
+        .range([0, width3]);
+
+      var y3 = d3.scaleLinear()
+        .domain([0, d3.max(finalData3, function(d){ return d.cases2025; })])
+        .range([height3, 0]);
+
+
+      // make dot size based on number of cases too
+      var r = d3.scaleSqrt()
+        .domain([0, d3.max(finalData3, function(d){ return d.cases2025; })])
+        .range([4,20]);
+
+     
+      svg3.append("g")
+        .attr("transform", "translate(0," + height3 + ")")
+        .call(d3.axisBottom(x3));
+      
+      
+        // axes titles
+      svg3.append("text")
+        .attr("x", width3/2)
+        .attr("y", height3 + 50)
+        .attr("text-anchor", "middle")
+        .text("Vaccination Rate (%)");
+
+      svg3.append("g")
+        .call(d3.axisLeft(y3));
+
+      svg3.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height3/2)
+        .attr("y", -50)
+        .attr("text-anchor", "middle")
+        .text("Number of Measles Cases (2025)");
+
+      // draw scatterplot dots
+      svg3.selectAll("circle")
+        .data(finalData3)
+        .enter()
+        .append("circle")
+        .attr("class", function(d){ return "scatter-dot " + d.state.replace(/\s+/g,""); })
+        .attr("cx", function(d){ return x3(d.vaccination); })
+        .attr("cy", function(d){ return y3(d.cases2025); })
+        .attr("r", function(d){ return r(d.cases2025); })
+        .attr("fill", "#917cfc")
+        
+        //hover on
+        .on("mouseover", function(event,d){
+          tooltip3.style("opacity", 1)
+            .html(
+              "<strong>" + d.state + "</strong><br>" +
+              "Vaccination: " + d.vaccination + "%<br>" +
+              "2025 Cases: " + d.cases2025
+            )
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 20) + "px");
+
+          d3.select(this)
+            .attr("fill", "lightblue");
+          
+          //adding interaction between viz 2 and 3 --> highlighting state + dot
+          d3.selectAll(".map-state." + d.state.replace(/\s+/g,""))
+            .attr("stroke","#6c5ce7")
+            .attr("stroke-width",3);
+          
+        })
+
+        //hover off
+        .on("mouseout", function(event,d){
+          tooltip3.style("opacity", 0);
+          d3.select(this)
+            .attr("r", r(d.cases2025))
+            .attr("fill", "#917cfc");
+
+          d3.selectAll(".map-state." + d.state.replace(/\s+/g,""))
+            .attr("stroke","#ffffff")
+            .attr("stroke-width",1);
+        });
+
+    });
+  });
+</script>
