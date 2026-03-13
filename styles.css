@@ -1,4 +1,4 @@
-hmtl{
+*{
     margin: 0;
     padding: 0;
 }
@@ -55,8 +55,6 @@ header p {
     border-left: 10px solid rgb(154, 164, 255);
     margin-top: 40px;
 }
-
-
 
 #tooltip1,
 #tooltip2, #tooltip3{
